@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Loading...</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      text-align: center;
+      padding-top: 50px;
+    }
+    video {
+      margin-top: 20px;
+      border: 2px solid #444;
+    }
+    #reveal {
+      display: none;
+      background: #222;
+      border: 1px solid #888;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Connecting...</h2>
+  <p>Your IP: <span id="ip">Loading...</span></p>
+
+  <button onclick="startCamera()">Grant Camera Access</button><br>
+  <video id="video" width="320" height="240" autoplay></video>
+
+  <div id="reveal">
+    <h2>⚠️ You Just Got Tricked</h2>
+    <p>This was a safe demo created by your friend to teach you a lesson.</p>
+    <p>Never open random links — they could have stolen your info or recorded you.</p>
+    <p>Stay smart. Stay safe online. 🧠</p>
+  </div>
+
+  <script>
+    // IP address fetch
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('ip').innerText = data.ip;
+      });
+
+    // Camera access
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          document.getElementById('video').srcObject = stream;
+          document.getElementById('reveal').style.display = 'block';
+        })
+        .catch(err => {
+          alert("Camera access denied.");
+        });
+    }
+  </script>
+
+</body>
+</html>
